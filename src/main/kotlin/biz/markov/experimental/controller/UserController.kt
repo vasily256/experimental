@@ -35,4 +35,8 @@ class UserController(private val userService: UserService) {
     fun delete(@RequestBody userDto: UserDto) {
         userService.delete(userDto)
     }
+
+    @PostMapping("/generate")
+    fun generate(count: Long, name: String) =
+        userService.generate(count, name)
 }

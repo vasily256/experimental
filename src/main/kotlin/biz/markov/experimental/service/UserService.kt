@@ -1,10 +1,10 @@
 package biz.markov.experimental.service
 
+import biz.markov.experimental.mapper.UserMapper
 import biz.markov.experimental.model.User
-import biz.markov.experimental.model.toDto
 import biz.markov.experimental.repository.UserRepository
 import biz.markov.experimental.view.UserDto
-import biz.markov.experimental.view.toEntity
+import org.mapstruct.factory.Mappers
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,16 +17,28 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class UserService(private val userRepository: UserRepository) {
 
-    fun get(userDto: UserDto): UserDto =
-        userRepository.getOne(userDto.id!!).toDto()
+    private val mapper = Mappers.getMapper(UserMapper::class.java)
 
-    fun create(userDto: UserDto): UserDto =
-        userRepository.save(userDto.toEntity()).toDto()
+    fun get(userDto: UserDto): UserDto = mapper.toDto(
+        userRepository.getOne(userDto.id!!)
+    )
 
-    fun update(userDto: UserDto): UserDto =
-        userRepository.save(userDto.toEntity()).toDto()
+    fun create(userDto: UserDto): UserDto = mapper.toDto(
+        userRepository.save(mapper.toEntity(userDto))
+    )
+
+    fun update(userDto: UserDto): UserDto = mapper.toDto(
+        userRepository.save(mapper.toEntity(userDto))
+    )
 
     fun delete(userDto: UserDto) {
-        userRepository.delete(userDto.toEntity())
+        userRepository.delete(mapper.toEntity(userDto))
+    }
+
+    fun generate(count: Long, name: String): List<UserDto> = ArrayList<User>().let {
+        for (n in 0..count) {
+            it.add(User(name = "${name}_$n"))
+        }
+        mapper.toDtoList(userRepository.saveAll(it))
     }
 }

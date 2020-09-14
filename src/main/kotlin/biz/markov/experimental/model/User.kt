@@ -1,6 +1,5 @@
 package biz.markov.experimental.model
 
-import biz.markov.experimental.view.UserDto
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.envers.Audited
 import java.util.*
@@ -28,5 +27,3 @@ data class User(
     @Column
     var name: String? = null
 )
-
-fun User.toDto() = UserDto(id, name)

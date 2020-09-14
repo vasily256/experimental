@@ -1,6 +1,5 @@
 package biz.markov.experimental.view
 
-import biz.markov.experimental.model.User
 import java.util.*
 
 /**
@@ -12,5 +11,3 @@ data class UserDto(
     var id: UUID? = null,
     var name: String? = null
 )
-
-fun UserDto.toEntity() = User(id, name)
