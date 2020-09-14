@@ -2,7 +2,7 @@ package biz.markov.experimental.controller
 
 import biz.markov.experimental.service.UserService
 import biz.markov.experimental.view.UserDto
-import biz.markov.experimental.view.toEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -23,15 +23,15 @@ class UserController(private val userService: UserService) {
     fun get(@RequestBody userDto: UserDto) =
         userService.get(userDto)
 
-    @PostMapping("/create")
+    @PostMapping
     fun create(@RequestBody userDto: UserDto) =
         userService.create(userDto)
 
-    @PutMapping("/update")
+    @PutMapping
     fun update(@RequestBody userDto: UserDto) =
         userService.update(userDto)
 
-    @PutMapping("/delete")
+    @DeleteMapping
     fun delete(@RequestBody userDto: UserDto) {
         userService.delete(userDto)
     }
